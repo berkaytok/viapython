@@ -9,11 +9,19 @@ st.set_page_config(layout="wide")
 # Load the data
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/all_services_binarized.csv")
-    gdf = gpd.read_file("data/va_county/va.shp")
-    return df, gdf
+    try:
+        df = pd.read_csv("data/all_services_binarized.csv")
+        gdf = gpd.read_file("data/va_county/va.shp")
+        return df, gdf
+    except Exception as e:
+        st.error(f"Error loading data: {str(e)}")
+        return None, None
 
 df, gdf = load_data()
+
+if df is None or gdf is None:
+    st.error("Failed to load data. Please check the error message above.")
+    st.stop()
 
 # Ensure service columns are integers
 service_columns = ["School Services", "Adult Services", "Behavioral Health"]
@@ -32,7 +40,7 @@ service = st.selectbox(
 )
 
 # Define the custom color list
-custom_colors = ["#14467C", "#72BF44", "#00AFAD"]
+custom_colors = ["#007bff", "#FFC300", "#000080"]
 
 # Create a custom hover text and handle NaN values
 def hover_text(row):
