@@ -11,7 +11,7 @@ st.set_page_config(layout="wide")
 def load_data():
     try:
         df = pd.read_csv("data/all_services_binarized.csv")
-        gdf = gpd.read_file("data/va_county/va.shp")
+        gdf = gpd.read_file("data/va.shp")
         return df, gdf
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
